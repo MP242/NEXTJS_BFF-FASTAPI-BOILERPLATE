@@ -1,9 +1,5 @@
 docker compose up -d
 
-taefik me dit que les certifs ne sont pas a jour
-docker restart backend (ca a fini par marcher)
-ou alors tu coupes et tu relances.
-
 ---
 
 frontend : http://localhost
