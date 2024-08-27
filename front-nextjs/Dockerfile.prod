@@ -1,0 +1,23 @@
+# Base: use base image for all stages
+FROM node:18-alpine AS base
+
+# Stage: Dependencies
+FROM base AS deps
+WORKDIR /app
+COPY package*.json ./
+RUN apk add --no-cache libc6-compat && npm install
+
+# Stage: Build
+FROM base AS build
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npm run build
+
+# Stage: Production
+FROM base AS production
+ENV NODE_ENV production
+WORKDIR /app
+COPY --from=build /app ./
+EXPOSE 3000
+CMD ["npm", "start"]
